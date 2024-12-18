@@ -1,5 +1,10 @@
 # **README: ML Forcefield Development using Classical Dihedral Biases**
 
+## Note for TAs
+
+Due to technical issues with the GitHub Classroom setup, I have placed my codes in my own GitHub repository instead. All relevant files and documentation can be accessed here. If you need any clarification, please feel free to reach out.
+
+
 ## **Introduction**
 
 This project presents a comprehensive **machine learning pipeline** for training, evaluating, and validating forcefields using the **DeepMD-kit** framework. The workflow is designed to process simulation data, train machine-learned forcefields, and rigorously evaluate their performance through testing and auxiliary analysis.
