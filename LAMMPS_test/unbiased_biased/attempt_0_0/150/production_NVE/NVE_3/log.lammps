@@ -1,0 +1,57 @@
+LAMMPS (2 Aug 2023)
+OMP_NUM_THREADS environment is not set. Defaulting to 1 thread. (src/comm.cpp:98)
+  using 1 OpenMP thread(s) per MPI task
+Loaded 1 plugins from /home/venkatan/deepmd-kit/lib/deepmd_lmp
+# LAMMPS input script for NVE and dihedral distribution analysis
+
+units           metal
+boundary        p p p
+atom_style      atomic
+
+# Read the restart file
+read_restart    ../../equilibration_NVT/restart_NVT/restart_NVT150.49570.bin
+Reading restart file ...
+  restart file = 2 Aug 2023, LAMMPS = 2 Aug 2023
+  restoring atom style atomic from restart
+  orthogonal box = (0 0 0) to (10 10 10)
+  1 by 1 by 1 MPI processor grid
+Summary of lammps deepmd module ...
+  >>> Info of deepmd-kit:
+  installed to:       /home/venkatan/deepmd-kit
+  source:             
+  source branch:      HEAD
+  source commit:      c45d372
+  source commit at:   2024-07-07 08:06:13 +0000
+  support model ver.: 1.1 
+  build variant:      cuda
+  build with tf inc:  /home/venkatan/deepmd-kit/lib/python3.11/site-packages/tensorflow/include;/home/venkatan/deepmd-kit/include
+  build with tf lib:  /home/venkatan/deepmd-kit/lib/python3.11/site-packages/tensorflow/libtensorflow_cc.so.2
+  set tf intra_op_parallelism_threads: 0
+  set tf inter_op_parallelism_threads: 0
+  >>> Info of lammps module:
+  use deepmd-kit at:  /home/venkatan/deepmd-kit  restoring pair style deepmd from restart
+  6 atoms
+  read_restart CPU = 0.001 seconds
+
+# Neighbor and interaction setup
+neighbor        1.0 bin
+neigh_modify    every 10 delay 0 check no
+
+# Define groups
+group real_atom type 1 2
+6 atoms in group real_atom
+
+# Define force field
+pair_style deepmd ../../../graph.pb
+pair_coeff * *
+
+# Set the timestep
+timestep        0.001
+
+# Thermodynamic output setup
+thermo          100
+thermo_style    custom step temp ke pe etotal vol press
+#thermo_modify   flush yes
+
+# Save to a file by redirecting the log output:
+log thermo_output.log

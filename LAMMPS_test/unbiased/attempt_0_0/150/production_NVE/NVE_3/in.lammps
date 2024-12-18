@@ -1,0 +1,43 @@
+# LAMMPS input script for NVE and dihedral distribution analysis
+
+units           metal
+boundary        p p p
+atom_style      atomic
+
+# Read the restart file
+read_restart    ../../equilibration_NVT/restart_NVT/restart_NVT150.49570.bin
+
+# Neighbor and interaction setup
+neighbor        1.0 bin
+neigh_modify    every 10 delay 0 check no
+
+# Define groups
+group real_atom type 1 2
+
+# Define force field
+pair_style deepmd ../../../graph.pb
+pair_coeff * *
+
+# Set the timestep
+timestep        0.001
+
+# Thermodynamic output setup
+thermo          100
+thermo_style    custom step temp ke pe etotal vol press
+#thermo_modify   flush yes
+
+# Save to a file by redirecting the log output:
+log thermo_output.log
+
+# Output configuration for trajectory analysis
+dump            1 all custom 100 ethylene_nve_150_3.dump id type x y z vx vy vz
+
+# Switch to NVE ensemble
+fix             1 all nve
+
+# Run the simulation for 20 ps (20 ps = 20000 steps with a 1 fs timestep)
+run             20000
+
+# Write final configuration to a data file
+write_data      out_nve_150_3.lmp
+

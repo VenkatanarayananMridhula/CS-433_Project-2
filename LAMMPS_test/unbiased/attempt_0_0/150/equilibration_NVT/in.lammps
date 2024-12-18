@@ -1,0 +1,66 @@
+# LAMMPS input script for a custom data setup
+
+units           metal
+boundary        p p p
+atom_style      atomic
+
+# Define simulation box
+region box block 0.0 10.0 0.0 10.0 0.0 10.0
+create_box 2 box   # 2 = number of atom types
+
+# Define masses
+mass 1 12.0107    # C
+mass 2 1.00794    # H
+
+# Create atoms (atom-ID, atom-type, x, y, z)
+create_atoms 1 single 4.34039 4.909915 5.001325
+create_atoms 1 single 5.65960 5.090085 4.998665
+create_atoms 2 single 6.24080 4.883975 5.891915
+create_atoms 2 single 6.16001 5.443825 4.103245
+create_atoms 2 single 3.83999 4.556175 5.896755
+create_atoms 2 single 3.75992 5.116025 4.108085
+
+# Neighbor and interaction setup
+neighbor        1.0 bin
+neigh_modify    every 10 delay 0 check no
+
+# Define force field
+pair_style deepmd ../../graph.pb
+pair_coeff * *
+
+# Define groups
+group real_atom type 1 2
+
+# Initialize velocities
+velocity real_atom create 150 12345 mom yes rot no
+
+# Minimize to remove overlaps
+minimize 1.0e-4 1.0e-6 1000 10000
+
+
+# Thermostat setup
+compute real_temp real_atom temp
+compute real_press all pressure real_temp
+fix 1 real_atom nvt temp 150.0 150.0 0.05
+fix_modify 1 temp real_temp
+
+# Thermodynamic output
+timestep 0.001
+thermo 2
+thermo_style custom step ke pe etotal temp press vol
+thermo_modify temp real_temp press real_press
+
+# Output thermodynamic data to a separate file
+fix thermo_print all print 2 "$(step) $(temp) $(press) $(ke) $(pe) $(etotal)" file thermo_data_NVT150.out screen no title "# Step Temp Press KE PE Total_Energy"
+
+# Dump configuration
+dump 1 real_atom custom 2 ethylene_NVT150.dump id type x y z vx vy vz
+
+# Run the first 19000 steps without writing restart files
+run 49550
+
+# Write restart files every 100 steps for the final 1000 steps
+restart 5 ./restart_NVT/restart_NVT150.*.bin
+run 50
+
+write_data out.lmp

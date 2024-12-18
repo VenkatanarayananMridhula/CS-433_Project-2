@@ -1,0 +1,11 @@
+numpy
+pandas
+scipy
+dpdata
+deepmd-kit-cu11[gpu,cu11]
+mpi4py
+h5py
+ase
+matplotlib
+lammps
+

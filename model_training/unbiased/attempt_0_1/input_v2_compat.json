@@ -1,0 +1,94 @@
+{
+    "_comment1": "Model parameters",
+    "model": {
+        "type_map": [
+            "C",
+            "H"
+        ],
+        "descriptor": {
+            "type": "se_e2_a",
+            "sel": [
+                2,
+                4
+            ],
+            "rcut_smth": 0.5,
+            "rcut": 6.0,
+            "neuron": [
+                50,
+                100
+            ],
+            "resnet_dt": true,
+            "axis_neuron": 6,
+            "type_one_side": true,
+            "precision": "float32",
+            "seed": 1142,
+            "_comment": " that's all"
+        },
+        "fitting_net": {
+            "neuron": [
+                120,
+                120,
+                120
+            ],
+            "resnet_dt": false,
+            "precision": "float32",
+            "seed": 1142,
+            "_comment": " that's all"
+        },
+        "_comment": " that's all"
+    },
+    "_comment2": "Learning rate schedule",
+    "learning_rate": {
+        "type": "exp",
+        "decay_steps": 5000,
+        "start_lr": 0.001,
+        "stop_lr": 3.51e-08,
+        "_comment": " that's all"
+    },
+    "_comment3": "Loss function",
+    "loss": {
+        "type": "ener",
+        "start_pref_e": 0.02,
+        "limit_pref_e": 1.0,
+        "start_pref_f": 1000.0,
+        "limit_pref_f": 1.0,
+        "start_pref_v": 0.0,
+        "limit_pref_v": 0.0,
+        "_comment": " that's all"
+    },
+    "_comment4": "Training parameters",
+    "training": {
+        "training_data": {
+            "systems": [
+                "../../../data_preprocessing/training_data/deePMD_ready/train/unbiased_300K",
+                "../../../data_preprocessing/training_data/deePMD_ready/train/unbiased_600K",
+                "../../../data_preprocessing/training_data/deePMD_ready/train/unbiased_1200K",
+                "../../../data_preprocessing/training_data/deePMD_ready/train/unbiased_150K"
+            ],
+            "batch_size": 32,
+            "auto_prob": "prob_uniform",
+            "_comment": " that's all"
+        },
+        "validation_data": {
+            "systems": [
+                "../../../data_preprocessing/training_data/deePMD_ready/val/unbiased_300K",
+                "../../../data_preprocessing/training_data/deePMD_ready/val/unbiased_600K",
+                "../../../data_preprocessing/training_data/deePMD_ready/val/unbiased_1200K",
+                "../../../data_preprocessing/training_data/deePMD_ready/val/unbiased_150K"
+            ],
+            "batch_size": 1,
+            "numb_btch": 3,
+            "auto_prob": "prob_uniform",
+            "_comment": " that's all"
+        },
+        "numb_steps": 1000000,
+        "save_ckpt": "./checkpoints",
+        "seed": 1142,
+        "disp_file": "lcurve.out",
+        "disp_freq": 100,
+        "save_freq": 1000,
+        "tensorboard": false,
+        "_comment": " that's all"
+    },
+    "_comment": "that's all"
+}
