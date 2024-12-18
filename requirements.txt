@@ -1,9 +1,11 @@
+# Note: Ensure ~/.local/bin is added to PATH for user-installed scripts.
+# Example: export PATH=$HOME/.local/bin:$PATH
 numpy
 pandas
 scipy
 dpdata
 deepmd-kit-cu11[gpu,cu11]
-mpi4py
+#mpi4py
 h5py
 ase
 matplotlib
